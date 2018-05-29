@@ -14,7 +14,6 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
     marginTop: 64,
-    overflow: 'scroll',
     maxHeight: '100%'
   },
 });

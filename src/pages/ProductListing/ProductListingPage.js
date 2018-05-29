@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import { initProductListing } from '../../store/actions/productActions';
 
+import ProductList from './ProductList';
+
 import { Page } from '../../components/CommonStyles';
 
 
@@ -14,7 +16,7 @@ class ProductListingPage extends React.Component {
   render() {
     return (
       <Page>
-        Product goes here
+        <ProductList products={this.props.products} />
       </Page>
     );
   }
