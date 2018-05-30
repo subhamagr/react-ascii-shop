@@ -44,13 +44,13 @@ export function setLoading(payload) {
 
 export function resetProductListing() {
   return (dispatch) => {
-    dispatch(setCurrentPage(0));
-    dispatch(setDemandedPage(1));
+    dispatch(setCurrentPage(constants.DEFAULT_CURRENT_PAGE));
+    dispatch(setDemandedPage(constants.DEFAULT_DEMANDED_PAGE));
     dispatch(setProducts([]));
   };
 }
 
-function hadnleFetchProducts() {
+function handleFetchProducts() {
   return (dispatch, getState) => {
     const { demandedPage, resultsPerPage, sort } = getState().productListing;
 
@@ -75,9 +75,17 @@ export function initProductListing(sortApplied = false) {
     if (!sortApplied) {
       dispatch(setSort(constants.DEFAULT_SORT));
     }
+    dispatch(setProducts([]));
     dispatch(setCurrentPage(constants.DEFAULT_CURRENT_PAGE));
     dispatch(setDemandedPage(constants.DEFAULT_DEMANDED_PAGE));
     dispatch(setProductsPerPage(constants.DEFAULT_RESULTS_PER_PAGE));
-    dispatch(hadnleFetchProducts());
+    dispatch(handleFetchProducts());
   };
+}
+
+export function handleApplySort(sort) {
+  return (dispatch) => {
+    dispatch(setSort(sort));
+    dispatch(initProductListing(true));
+  }
 }
