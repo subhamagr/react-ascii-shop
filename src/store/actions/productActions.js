@@ -58,7 +58,7 @@ function handleFetchProducts() {
     ProductAPI.getProducts(demandedPage, resultsPerPage, sort)
       .then(res => res.data)
       .then((products = []) => {
-        dispatch(setHasMoreProducts(!!products.length));
+        dispatch(setHasMoreProducts(products.length === resultsPerPage));
         dispatch(setCurrentPage(demandedPage));
         dispatch(appendProducts(products));
         dispatch(setLoading(false));
@@ -88,4 +88,12 @@ export function handleApplySort(sort) {
     dispatch(setSort(sort));
     dispatch(initProductListing(true));
   }
+}
+
+export function handleLoadMoreProducts() {
+  return (dispatch, getState) => {
+    const { currentPage } = getState().productListing;
+    dispatch(setDemandedPage(currentPage + 1));
+    dispatch(handleFetchProducts());
+  };
 }

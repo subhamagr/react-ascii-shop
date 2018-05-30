@@ -1,7 +1,8 @@
 import React from 'react';
+import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
 
-import { handleApplySort, initProductListing } from '../../store/actions/productActions';
+import { handleApplySort, handleLoadMoreProducts, initProductListing } from '../../store/actions/productActions';
 
 import ProductList from './components/ProductList';
 
@@ -14,6 +15,22 @@ import Loader from './components/Loader';
 class ProductListingPage extends React.Component {
   componentWillMount() {
     this.props.initProductListing();
+
+    window.addEventListener('scroll', debounce(this.onScroll, 100));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', debounce(this.onScroll, 100));
+  }
+
+  onScroll = () => {
+    const preloadOffset = 4000;
+    const scrollHeight = document.body.scrollHeight;
+    const scrollPosition = window.scrollY + window.innerHeight;
+    const isAtBottom = (scrollPosition + preloadOffset) >= scrollHeight;
+    if (isAtBottom && !this.props.loading && this.props.hasMoreProducts) {
+      this.props.handleLoadMoreProducts();
+    }
   }
 
   render() {
@@ -36,7 +53,7 @@ class ProductListingPage extends React.Component {
 
 const mapStateToProps = state => ({ ...state.productListing });
 
-const mapDispatchToProps = { handleApplySort, initProductListing };
+const mapDispatchToProps = { handleApplySort, handleLoadMoreProducts, initProductListing };
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductListingPage);

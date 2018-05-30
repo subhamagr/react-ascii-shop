@@ -18,7 +18,7 @@ function productListingReducer(state = initialState, action) {
       return Object.assign({}, state, { products: action.payload });
 
     case PRODUCT_LISTING_ACTION_TYPES.APPEND_PRODUCTS:
-      return Object.assign({}, state, { products: action.payload });
+      return Object.assign({}, state, { products: [...state.products, ...action.payload] });
 
     case PRODUCT_LISTING_ACTION_TYPES.SET_HAS_MORE_PRODUCTS:
       return Object.assign({}, state, { hasMoreProducts: action.payload });
