@@ -8,6 +8,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { centsToDollar } from '../../utils/price';
+import { humanize } from '../../utils/datetime';
 
 const styles = theme => ({
   card: {
@@ -15,10 +16,8 @@ const styles = theme => ({
     textAlign: 'center',
     height: '100%'
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+  cardContent: {
+    height: '30%',
   },
   title: {
     marginBottom: 16,
@@ -39,18 +38,20 @@ function ProductList(props) {
     <div>
       <Grid container spacing={24}>
         {products.map(p => (
-          <Grid item xs={6} sm={4} key={p.id}>
+          <Grid item xs={12} sm={6} md={4} key={p.id}>
             <Card className={classes.card}>
-              <CardContent>
+              <CardContent className={classes.cardContent}>
                 <Typography variant="headline" component="h2" style={{ fontSize: p.size }}>
                   {p.face}
                 </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  {p.date}
-                </Typography>
               </CardContent>
+              <div>
+                <Typography className={classes.pos} color="textSecondary">
+                  {humanize(p.date)}
+                </Typography>
+              </div>
               <CardActions>
-                <Button size="large" className={classes.buyNow}>Buy for ${centsToDollar(p.price, 2)}</Button>
+                <Button size="large" className={classes.buyNow}>Buy Now ${centsToDollar(p.price, 2)}</Button>
               </CardActions>
             </Card>
           </Grid>
